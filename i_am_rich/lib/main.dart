@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
           child: Image(
-            image: AssetImage('images/x.jpg'),
+            image: AssetImage('images/X.jpg'),
           ),
         ),
       ),
