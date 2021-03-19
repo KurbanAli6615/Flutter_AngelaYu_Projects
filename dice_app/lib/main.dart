@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,26 +26,59 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class DicePage extends StatelessWidget {
-  var leftDiceNumber = 1;
-  var rightDicenUmber = 4;
+class DicePage extends StatefulWidget {
+  @override
+  _DicePageState createState() => _DicePageState();
+}
+
+class _DicePageState extends State<DicePage> {
+  int leftDiceNumber = 1;
+  int rightDicenUmber = 2;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    setNewDice();
+  }
+
+  void setNewDice() {
+    setState(() {
+      leftDiceNumber = Random().nextInt(6) + 1;
+      rightDicenUmber = Random().nextInt(6) + 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Row(
         children: [
           Expanded(
-            // ignore: deprecated_member_use
             child: FlatButton(
               child: Image.asset("images/dice$leftDiceNumber.png"),
-              onPressed: () {},
+              onPressed: () {
+                setNewDice();
+              },
+              onLongPress: () {
+                setState(() {
+                  leftDiceNumber = 1;
+                  rightDicenUmber = 1;
+                });
+              },
             ),
           ),
           Expanded(
-            // ignore: deprecated_member_use
             child: FlatButton(
               child: Image.asset("images/dice$rightDicenUmber.png"),
-              onPressed: () {},
+              onPressed: () {
+                setNewDice();
+              },
+              onLongPress: () {
+                setState(() {
+                  leftDiceNumber = 1;
+                  rightDicenUmber = 1;
+                });
+              },
             ),
           ),
         ],
