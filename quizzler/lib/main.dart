@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -30,16 +31,18 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
+  int questionNumber = 0;
 
   void checkAnswer(bool userAnswer) {
     setState(() {
-      if (userAnswer == quizBrain.getAnswer()) {
+      if (userAnswer == quizBrain.getAnswer(questionNumber)) {
         scoreKeeper.add(
           Icon(
             Icons.check_circle,
             color: Colors.green,
           ),
         );
+        questionNumber += 1;
       } else {
         scoreKeeper.add(
           Icon(
@@ -47,9 +50,36 @@ class _QuizPageState extends State<QuizPage> {
             color: Colors.red,
           ),
         );
+        questionNumber += 1;
       }
-      quizBrain.getNextQuestion();
     });
+  }
+
+  void showalert(BuildContext context) {
+    Alert(
+      context: context,
+      type: AlertType.success,
+      title: "Quiz Reset",
+      desc: "You have completed all question",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          color: Color.fromRGBO(0, 179, 134, 1.0),
+        ),
+      ],
+    ).show();
+  }
+
+  String getQuestion(BuildContext context) {
+    if (questionNumber == 13) {
+      questionNumber = 0;
+      scoreKeeper.clear();
+    }
+    return quizBrain.getQuestionText(questionNumber);
   }
 
   @override
@@ -64,7 +94,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.getQuestionText(),
+                getQuestion(context),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -88,6 +118,9 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                if (questionNumber == 12) {
+                  showalert(context);
+                }
                 checkAnswer(true);
               },
             ),
@@ -106,6 +139,9 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                if (questionNumber == 12) {
+                  showalert(context);
+                }
                 checkAnswer(false);
               },
             ),

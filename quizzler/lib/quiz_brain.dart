@@ -32,17 +32,20 @@ class QuizBrain {
         true),
   ];
 
-  void getNextQuestion() {
-    if (_questionCounter < _questionBank.length) {
-      _questionCounter++;
-    }
+  // void getNextQuestion() {
+  //   if (_questionCounter == 12) {
+  //     _questionCounter = -1;
+  //   }
+  //   if (_questionCounter < _questionBank.length) {
+  //     _questionCounter++;
+  //   }
+  // }
+
+  String getQuestionText(int number) {
+    return _questionBank[number].questionText;
   }
 
-  String getQuestionText() {
-    return _questionBank[_questionCounter].questionText;
-  }
-
-  bool getAnswer() {
-    return _questionBank[_questionCounter].questionAnswer;
+  bool getAnswer(int number) {
+    return _questionBank[number].questionAnswer;
   }
 }
